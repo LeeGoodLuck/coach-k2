@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <title>用户登录</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link href="../css/weui.min.css" rel="stylesheet">
+    <link href="../css/weuix.css" rel="stylesheet">
+
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/jquetyWeui.js"></script>
+    <script type="text/javascript" src="../js/common.js"></script>
+</head>
+<body>
+<div class="weui-btn-area" id="agent">
+    <a class="weui-btn weui-btn_primary" href="javascript:">代理商登录</a>
+</div>
+<div class="weui-btn-area" id="coach">
+    <a class="weui-btn weui-btn_primary" href="javascript:">教练登录</a>
+</div>
+<div class="weui-btn-area" id="student">
+    <a class="weui-btn weui-btn_primary" href="javascript:">学员登录</a>
+</div>
+</body>
+
+<script>
+    var k2_type = 1;
+    var type = parseInt(getUrlParam(`type`));
+    var login_coach_url;
+    var login_agent_url;
+    var login_student_url;
+    if (type === k2_type) {
+        document.title = '科目二';
+        login_coach_url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appId + "&redirect_uri=http://" + domainUrl + "/mp/k2/html/index.html&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect";
+        login_agent_url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appId + "&redirect_uri=http://" + domainUrl + "/mp/k2/html/index.html&response_type=code&scope=snsapi_userinfo&state=3#wechat_redirect";
+        login_student_url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appId + "&redirect_uri=http://" + domainUrl + "/mp/k2/html/index.html&response_type=code&scope=snsapi_userinfo&state=2#wechat_redirect";
+    } else {
+        document.title = '科目三';
+        login_coach_url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appId + "&redirect_uri=http://" + domainUrl + "/mp/static/html/index.html&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect";
+        login_agent_url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appId + "&redirect_uri=http://" + domainUrl + "/mp/static/html/index.html&response_type=code&scope=snsapi_userinfo&state=3#wechat_redirect";
+        login_student_url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appId + "&redirect_uri=http://" + domainUrl + "/mp/static/html/index.html&response_type=code&scope=snsapi_userinfo&state=2#wechat_redirect";
+
+    }
+
+    $("#coach").click(function () {
+        window.location = login_coach_url;
+    });
+    $("#agent").click(function () {
+        window.location = login_agent_url;
+    });
+    $("#student").click(function () {
+        window.location = login_student_url;
+    });
+</script>
+</html>

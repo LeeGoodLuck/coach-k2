@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>余额查询</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link href="../css/weui.min.css" rel="stylesheet">
+    <link href="../css/weuix.css" rel="stylesheet">
+
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/common.js"></script>
+    <script type="text/javascript" src="../js/jquetyWeui.js"></script>
+</head>
+<body>
+<div class="weui-btn-area">
+    <a class="weui-btn weui-btn_primary" href="javascript:" id="coachOverDemand">余额查询</a>
+    <a class="weui-btn weui-btn_primary" href="javascript:" id="agentOverDemand">余额查询</a>
+    <a class="weui-btn weui-btn_primary" href="javascript:" id="studentOverDemand">余额查询</a>
+</div>
+</body>
+<script>
+    $(function () {
+        var userType = window.localStorage.getItem(USER_TYPE);
+        if(userType == 1){//教练
+            $("#agentOverDemand").hide();
+            $("#studentOverDemand").hide();
+        }else if(userType ==2){//学员
+            $("#coachOverDemand").hide();
+            $("#agentOverDemand").hide();
+        }else if(userType == 3){//运营商登陆
+            $("#studentOverDemand").hide();
+            $("#coachOverDemand").hide();
+        }
+    });
+
+    $("#coachOverDemand")
+        .click(function () {
+            window.location.href = "overage.html?type="+COACH;
+        });
+
+    $("#agentOverDemand")
+        .click(function () {
+            window.location.href = "overage.html?type="+AGENT;
+        });
+
+    $("#studentOverDemand")
+        .click(function () {
+            window.location.href = "overage.html?type="+STUDENT;
+        });
+
+
+
+</script>
+</html>

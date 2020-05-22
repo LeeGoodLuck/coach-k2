@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>会员充值</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
+
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link href="css/app.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/weui.min.css">
+    <link rel="stylesheet" href="../css/jquery-weui.min.css">
+    <script src="http://res2.wx.qq.com/open/js/jweixin-1.4.0.js "></script>
+    <script src="../js/jquery.js"></script>
+    <script src="../js/common.js"></script>
+    <script src="http://res2.wx.qq.com/open/js/jweixin-1.4.0.js "></script>
+    <script type="text/javascript" src="../js/jquetyWeui.js"></script>
+    <style>
+        .submit {
+            display: block;
+            margin: 0 auto 0;
+            width: 300px;
+            height: 40px;
+            font-size: 16px;
+            color: #fff;
+            background: #80D983;
+            border: 1px solid #47D14C;
+            border-radius: 3px;
+        }
+
+        input {
+            border: 1px solid #ccc;
+            padding: 7px 0px;
+            border-radius: 3px;
+            padding-left: 5px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s
+        }
+
+        input:focus {
+            border-color: #66afe9;
+            outline: 0;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6)
+        }
+
+        .line_show {
+            width: 300px;
+            height: 1px;
+            border: none;
+            border-top: 1px solid #555555;
+        }
+
+        .show_title {
+            margin: 20px auto;
+            display: block;
+            width: 100px;
+            height: 20px;
+        }
+
+        .show_inp {
+            margin: 0 auto;
+            display: block;
+            width: 300px;
+            height: 40px;
+        }
+
+        .show_button {
+            margin: 10px auto;
+            display: block;
+            width: 300px;
+            height: 80px;
+        }
+
+        .show_button1 {
+            margin: 10px auto;
+            display: flex;
+            width: 300px;
+            height: 90px;
+        }
+
+        .show_input {
+            margin-left: 20px;
+            margin-top: 5px;
+        }
+
+        button {
+            background: white;
+            border: 1px solid #ccc;
+            width: 80px;
+            height: 80px;
+        }
+
+        button.active {
+            border-color: #66afe9;
+        }
+
+        .show_img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .show_top {
+            margin: 10px auto;
+            display: flex;
+            width: 300px;
+            height: 100px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="show_top">
+    <div>
+        <span class="show_title">关联教练：</span>
+    </div>
+    <div style="margin-top: 10px; vertical-align:middle;">
+        <div>
+            <img id="img_coach" src="../img/logo.jpg" class="show_img">
+        </div>
+        <div>
+            <label id="coach_name"></label>
+        </div>
+    </div>
+</div>
+<hr class="line_show"/>
+<span class="show_title">充值金额</span>
+<div class="show_button">
+    <button type='button' id="btn1" value="19" class="active">19</button>
+    <button type='button' id="btn2" value="29">29</button>
+    <button type='button' id="btn3" value="39">39</button>
+</div>
+<div class="show_button">
+    <button type='button' id="btn4" value="59">59</button>
+    <button type='button' id="btn5" value="99">99</button>
+</div>
+<div style="margin-top: 10px">
+    <div class="show_button1">
+        <div>
+            <button type='button' id="btn6">自定义</button>
+        </div>
+        <div style="margin-top: 10px">
+            <label class="show_input">充值金额</label>
+            <input id="recharge_amount" type="number" class="show_input" onpropertychange="OnPropChanged (event)"
+                   placeholder="请输入充值金额">
+        </div>
+    </div>
+    <div class="show_inp">
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label">收款方：</label>
+            <span class="weui-form-preview__value" id="charge_account"></span>
+        </div>
+    </div>
+    <div class="show_inp">
+        <div class="weui-form-preview__item">
+            <label class="weui-form-preview__label" id="time_title">练车时间：</label>
+            <span class="weui-form-preview__value" id="test_time"></span>
+        </div>
+    </div>
+    <div>
+        <button type="submit" class="submit" href="javascript:"
+                id="immediatelyPay">立即支付
+        </button>
+    </div>
+</div>
+
+</body>
+
+
+<script>
+
+    var recharge_money;
+    var coachId;
+
+    $(function () {
+        var coachName = decodeURI(getUrlParam("coachName"), "utf-8");
+
+        var heading = getUrlParam("heading");
+        coachId = getUrlParam("coachId");
+
+        var chargeRate = getUrlParam("chargeRate");
+        if (chargeRate != null && chargeRate != '' && chargeRate != undefined) {
+            $('#time_title').html('练车时间(' + chargeRate + '元/小时):');
+        }
+
+        $('#charge_account').html(titleStr);
+
+        if (coachName != null && coachName != '') {
+            $('#coach_name').html(coachName);
+        }
+        if (heading != null && heading != '') {
+            $('#img_coach').attr("src", heading);
+        }
+
+        $('input').on('input propertychange', function () {
+            recharge_money = $('#recharge_amount').val();
+            showTime();
+        });
+
+        $('#recharge_amount').attr("readonly", "readonly");
+
+        var inputType = 1;
+        //如果用jquery，会很方便实现
+        $('#btn1').click(function () {//给id为btn的元素添加点击事件
+            inputType = 1;
+            $('#btn1').addClass('active');//每次点击的时候，将当前的元素切换active样式
+            $('#btn2').removeClass('active');
+            $('#btn3').removeClass('active');
+            $('#btn4').removeClass('active');
+            $('#btn5').removeClass('active');
+            $('#btn6').removeClass('active');
+            $('#recharge_amount').attr("readonly", "readonly");
+            $('#recharge_amount').val('');
+
+            recharge_money = $('#btn1').val();
+            showTime();
+        });
+        $('#btn2').click(function () {//给id为btn的元素添加点击事件
+            inputType = 2;
+            $('#btn1').removeClass('active');//每次点击的时候，将当前的元素切换active样式
+            $('#btn2').addClass('active');
+            $('#btn3').removeClass('active');
+            $('#btn4').removeClass('active');
+            $('#btn5').removeClass('active');
+            $('#btn6').removeClass('active');
+            $('#recharge_amount').attr("readonly", "readonly");
+            $('#recharge_amount').val('');
+
+            recharge_money = $('#btn2').val();
+            showTime();
+        });
+        $('#btn3').click(function () {//给id为btn的元素添加点击事件
+            inputType = 3;
+            $('#btn1').removeClass('active');//每次点击的时候，将当前的元素切换active样式
+            $('#btn2').removeClass('active');
+            $('#btn3').addClass('active');
+            $('#btn4').removeClass('active');
+            $('#btn5').removeClass('active');
+            $('#btn6').removeClass('active');
+            $('#recharge_amount').attr("readonly", "readonly");
+            $('#recharge_amount').val('');
+
+            recharge_money = $('#btn3').val();
+            showTime();
+        });
+        $('#btn4').click(function () {//给id为btn的元素添加点击事件
+            inputType = 4;
+            $('#btn1').removeClass('active');//每次点击的时候，将当前的元素切换active样式
+            $('#btn2').removeClass('active');
+            $('#btn3').removeClass('active');
+            $('#btn4').addClass('active');
+            $('#btn5').removeClass('active');
+            $('#btn6').removeClass('active');
+            $('#recharge_amount').attr("readonly", "readonly");
+            $('#recharge_amount').val('');
+
+            recharge_money = $('#btn4').val();
+            showTime();
+        });
+        $('#btn5').click(function () {//给id为btn的元素添加点击事件
+            inputType = 5;
+            $('#btn1').removeClass('active');//每次点击的时候，将当前的元素切换active样式
+            $('#btn2').removeClass('active');
+            $('#btn3').removeClass('active');
+            $('#btn4').removeClass('active');
+            $('#btn5').addClass('active');
+            $('#btn6').removeClass('active');
+            $('#recharge_amount').attr("readonly", "readonly");
+            $('#recharge_amount').val('');
+
+            recharge_money = $('#btn5').val();
+            showTime();
+        });
+        $('#btn6').click(function () {//给id为btn的元素添加点击事件
+            inputType = 6;
+            $('#btn1').removeClass('active');//每次点击的时候，将当前的元素切换active样式
+            $('#btn2').removeClass('active');
+            $('#btn3').removeClass('active');
+            $('#btn4').removeClass('active');
+            $('#btn5').removeClass('active');
+            $('#btn6').addClass('active');
+
+            $('#recharge_amount').removeAttr("readonly", "readonly");
+            // recharge_money = $('#btn6').val();
+            showTime();
+        });
+
+        function showTime() {
+            var testTime = recharge_money * 60 / chargeRate;
+            var hour = testTime / 60;
+            hour = Math.floor(hour);
+            var min = testTime % 60;
+
+            if (testTime == null || testTime == '' || testTime == Infinity || isNaN(testTime)) {
+                $('#test_time').html('0');
+            } else {
+                $('#test_time').html(hour + '小时' + min + '分钟');
+            }
+        }
+
+        function studentPay(token, student_id, recharge_money, coachId) {
+            var jsonData = {
+                "token": token,
+                "student_id": student_id,
+                "recharge_money": recharge_money,
+                "amount_give": 0,
+                "coachId": coachId
+            };
+            console.log("请求参数 jsonData = " + jsonData);
+            $.ajax({
+                url: baseUrl + "coach_background/student/recharge.do",
+                type: TYPE_POST,
+                data: jsonData,
+                dataType: DATA_TYPE_JSON,
+                success: function (data) {
+                    console.log("学员充值生成订单 返回的数据 == " + JSON.stringify(data));
+                    if (data.code == 0) {
+                        var order_no = data.order_no;
+                        // var jsonData = {"token":token,"student_id":student_id,"recharge_money":recharge_money};
+                        pay(student_id, token, order_no);
+                    }
+                    //学员登陆
+                    // studentLogin(data);
+                },
+                error: function (msg) {
+                    console.log(msg);
+                }
+            });
+        }
+
+
+        $("#immediatelyPay").click(function () {
+            switch (inputType) {
+                case 1:
+                    recharge_money = $('#btn1').val();
+                    break;
+                case 2:
+                    recharge_money = $('#btn2').val();
+                    break;
+                case 3:
+                    recharge_money = $('#btn3').val();
+                    break;
+                case 4:
+                    recharge_money = $('#btn4').val();
+                    break;
+                case 5:
+                    recharge_money = $('#btn5').val();
+                    break;
+                case 6:
+                    recharge_money = $('#recharge_amount').val();
+                    break;
+            }
+
+            if (recharge_money == null || recharge_money == '') {
+                $.toast("请先选择或者输入金额", 2000);
+                return;
+            }
+            if (coachId == null || coachId == '') {
+                $.toast("没有填写关联教练", 2000);
+                return;
+            }
+
+            var studentInfo = JSON.parse(window.localStorage.getItem(STUDENT_KEY));
+            var token = studentInfo.token;
+            var student_id = studentInfo.student_id;
+            if (token == null || token == '') {
+                // getUserInfo();
+                $.toast("请先登陆", 2000);
+            } else {
+                studentPay(token, student_id, recharge_money, coachId);
+            }
+
+        });
+
+        /**
+         * 发起支付
+         */
+        function pay(student_id, token, order_no) {
+            var requestData = {
+                "student_id": student_id,
+                "token": token,
+                "order_no": order_no
+            };
+            //调用后台付款接口
+            $.ajax({
+                url: baseUrl + "coach_background/student/h5Pay.do",
+                type: TYPE_POST,
+                dataType: DATA_TYPE_JSON,
+                data: requestData,
+                success: function (data) {
+                    console.log("调用付款签名返回值 == " + JSON.stringify(data));
+                    if (data.code == 0) {
+                        wx.config({
+                            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                            appId: data.appId, // 必填，公众号的唯一标识
+                            timestamp: data.timeStamp, // 必填，生成签名的时间戳
+                            nonceStr: data.nonceStr, // 必填，生成签名的随机串
+                            signature: data.paySign,// 必填，签名
+                            jsApiList: ['chooseWXPay'] // 必填，需要使用的JS接口列表
+                        });
+
+                        wx.ready(function () {
+                            wx.chooseWXPay({
+                                timestamp: data.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+                                nonceStr: data.nonceStr, // 支付签名随机串，不长于 32 位
+                                package: data.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
+                                signType: data.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+                                paySign: data.paySign, // 支付签名
+                                success: function (res) {
+                                    console.log("支付返回结果 == " + JSON.stringify(res));
+                                    console.log(res);// 支付成功后的回调函数
+                                    if (res.errMsg == "chooseWXPay:ok") {
+                                        //支付成功
+                                        // alert('支付成功');
+                                        WeixinJSBridge.call('closeWindow');
+                                    } else {
+                                        // alert(res.errMsg);
+                                    }
+                                },
+                                error: function (msg) {
+                                    //支付取消
+                                    console.log(msg);
+                                }
+                            });
+                        });
+                    }
+                }
+            });
+        }
+    });
+
+</script>
+</html>

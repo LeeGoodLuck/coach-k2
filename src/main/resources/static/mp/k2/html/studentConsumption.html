@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <link href="../css/weui.min.css" rel="stylesheet">
+    <link href="../css/weuix.css" rel="stylesheet">
+
+    <script src="http://res2.wx.qq.com/open/js/jweixin-1.4.0.js "></script>
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/common.js"></script>
+    <script type="text/javascript" src="../js/jquetyWeui.js"></script>
+
+    <title>收入明细</title>
+</head>
+
+<body>
+
+<!--<div class="header-logo">-->
+<!--    <div class="header-logo-img">-->
+<!--        <img src="../img/logo.jpg" alt=""/>-->
+<!--    </div>-->
+<!--    <div class="header-logo-text"></div>-->
+<!--</div>-->
+
+<h3>学员消费记录</h3>
+<div class="weui-grids">
+    <a href="" class="weui-grid ">
+        <p class="weui-grid__label">
+            时间
+        </p>
+    </a>
+
+    <a href="" class="weui-grid js_grid">
+        <p class="weui-grid__label">
+            学员
+        </p>
+    </a>
+    <a href="" class="weui-grid js_grid">
+        <p class="weui-grid__label">
+            消费金额
+        </p>
+    </a>
+    <a href="" class="weui-grid js_grid">
+        <p class="weui-grid__label">
+            收益
+        </p>
+    </a>
+</div>
+
+<script>
+    var localStorage = window.localStorage;
+    var pageNumber = 1;
+    var quantity = 20;
+    //收益记录查询
+
+    $(function () {
+            //教练明细
+            var userData = localStorage.getItem(COACH_KEY);
+            userData = JSON.parse(userData);
+            var requestData = {
+                "coach_id": userData.coach_id,
+                "token": userData.token,
+                "pages_no": pageNumber,
+                "quantity": quantity,
+            };
+
+            $.ajax({
+                url: studentIncome_url,
+                type: TYPE_POST,
+                data: requestData,
+                dataType: DATA_TYPE_JSON,
+                success: function (data) {
+                    console.log(JSON.stringify(data));
+                    if (data.code === 0) {
+                        var list = data.income_list;
+                        for (var i = 0; i < list.length; i++) {
+                            var s = "<div class='weui-grids'>" +
+                                "<a class='weui-grid'>" +
+                                "<p class='weui-grid__label'>"
+                                + list[i].test_time + "" +
+                                "</p>" +
+                                "</a>" +
+                                "<a class='weui-grid'>" +
+                                "<p class='weui-grid__label'>"
+                                + list[i].student_name + "" +
+                                "</p>" +
+                                "</a>" + "<a class='weui-grid'>" +
+                                "<p class='weui-grid__label'>"
+                                + list[i].test_money + "" +
+                                "</p>" +
+                                "</a>" + "</a>" + "<a class='weui-grid'>" +
+                                "<p class='weui-grid__label'>"
+                                + list[i].coach_money + "" +
+                                "</p>" +
+                                "</a>" +
+                                "</div>";
+                            $("body").append(s)
+                        }
+                    } else {
+                        $.toast("暂无收益", 2000);
+                    }
+                }
+            });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>会员充值</title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+  <meta http-equiv="Pragma" content="no-cache"/>
+  <meta http-equiv="Expires" content="0"/>
+
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link href="css/app.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/weui.min.css">
+  <link rel="stylesheet" href="../css/jquery-weui.min.css">
+  <script src="http://res2.wx.qq.com/open/js/jweixin-1.4.0.js "></script>
+  <script src="../js/jquery.js"></script>
+  <script src="../js/common.js"></script>
+  <script src="http://res2.wx.qq.com/open/js/jweixin-1.4.0.js "></script>
+  <script type="text/javascript" src="../js/jquetyWeui.js"></script>
+  <style>
+    .submit {
+      display: block;
+      margin: 0 auto 0;
+      width:300px;
+      height: 40px;
+      font-size: 16px;
+      color: #fff;
+      background: #80D983;
+      border: 1px solid #47D14C;
+      border-radius: 3px;
+    }
+
+    input{
+      border: 1px solid #ccc;
+      padding: 7px 0px;
+      border-radius: 3px;
+      padding-left:5px;
+      -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+      box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+      -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+      -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+      transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s
+    }
+    input:focus{
+      border-color: #66afe9;
+      outline: 0;
+      -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+      box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+    }
+    .line_show{
+      width: 300px;
+      height:1px;
+      border:none;
+      border-top:1px solid #555555;
+    }
+    .show_title{
+      margin:20px auto;
+      display: block;
+      width: 300px;
+      height: 20px;
+    }
+    .show_inp{
+      margin:0 auto;
+      display: block;
+      width: 300px;
+      height: 40px;
+    }
+    .show_input{
+      margin-top: 5px;
+    }
+
+    </style>
+</head>
+<body>
+<span class="show_title" >会员充值</span>
+<hr class="line_show" />
+</div>
+<div style="margin-top: 20px">
+  <div class="show_inp">
+    <label class="show_input">请输入关联教练手机号</label>
+
+    </div>
+  <div class="show_inp">
+    <input id="coach_tel" type="tel" class="show_input">
+  </div>
+  <div style="margin-top: 20px" >
+    <button type="submit" class="submit" href="javascript:"
+            id="immediatelyPay">下一步
+    </button>
+  </div>
+</div>
+
+</body>
+
+
+<script>
+
+  $(function () {
+
+    $("#immediatelyPay").click(function () {
+      var coachTel = $("#coach_tel").val();
+      if(coachTel == null || coachTel == ''){
+        $.toast("请先输入手机号", 2000);
+        return;
+      }
+      getCoachInfo(coachTel);
+
+    });
+
+  });
+
+  function getCoachInfo(coachTel){
+    var jsonData = {"tel":coachTel};
+    $.ajax({
+      url: baseUrl+"coach_background/student/query_coach.do",
+      type: TYPE_POST,
+      data: jsonData,
+      dataType: DATA_TYPE_JSON,
+      success: function (data) {
+        console.log("根据手机号查询教练 返回的数据 == " + JSON.stringify(data));
+        if(data.code == 0){
+          var coachName = data.coachName;
+          var heading = data.heading;
+          var coachId = data.coachId;
+          var chargeRate = data.chargeRate;
+          if(rechargeType == 1){
+            window.location.href = "student_recharge.html?coachId="+coachId+"&coachName="+encodeURI(encodeURI(coachName))+"&heading="+heading+"&chargeRate="+chargeRate;
+          }else {
+            window.location.href = "student_recharge1.html?coachId="+coachId+"&coachName="+encodeURI(encodeURI(coachName))+"&heading="+heading+"&chargeRate="+chargeRate;
+          }
+        }else {
+          alert(data.msg)
+        }
+      },
+      error: function (msg) {
+        console.log(msg);
+      }
+    });
+  }
+
+</script>
+</html>
